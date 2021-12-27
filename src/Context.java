@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 public class Context extends JPanel
 {
@@ -131,6 +132,7 @@ public class Context extends JPanel
                 }
 
                 // Remove this collision and any collisions relating to the colliding bodies
+                ArrayList<Double> removals = new ArrayList<Double>();
                 for (Map.Entry<Double, Collision> c : collisions.entrySet())
                 {
                     if (c.getValue().getTarget(0) == collision.getTarget(0) ||
@@ -138,8 +140,13 @@ public class Context extends JPanel
                             c.getValue().getTarget(1) == collision.getTarget(0) ||
                             c.getValue().getTarget(1) == collision.getTarget(1))
                     {
-                        collisions.remove(c.getKey(), c.getValue());
+                        removals.add(c.getKey());
                     }
+                }
+
+                for (double key : removals)
+                {
+                    collisions.remove(key);
                 }
 
                 // Recalculate new influence rects of colliding bodies and see if they intersect
@@ -293,7 +300,7 @@ public class Context extends JPanel
         }
         else
         {
-            time = c / Math.abs(b);
+            time = c / Math.abs(body1.getVelocity().get(ad) - body2.getVelocity().get(ad));
             if (time < 0 || time > tickLength)
             {
                 return -1;

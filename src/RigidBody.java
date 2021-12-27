@@ -22,8 +22,12 @@ public class RigidBody extends JPanel
     private int mass;
 
     private boolean isStatic;
-
     public RigidBody(int x, int y, int w, int h, double xVelocity, double yVelocity, boolean isStatic)
+    {
+        this(x, y, w, h, xVelocity, yVelocity, isStatic, Color.black);
+    }
+
+    public RigidBody(int x, int y, int w, int h, double xVelocity, double yVelocity, boolean isStatic, Color color)
     {
         influence = null;
         position = new Vector(x, y);
@@ -52,7 +56,7 @@ public class RigidBody extends JPanel
         }
 
         setLayout(null);
-        setBackground(Color.black);
+        setBackground(color);
         setBounds(x, y, w, h);
     }
 
@@ -122,6 +126,6 @@ public class RigidBody extends JPanel
         position.addY(velocity.getY() * time + 0.5 * acceleration.getY() * Math.pow(time, 2));
 
         velocity.add(acceleration.getX() * time, acceleration.getY() * time);
-        setLocation((int) position.getX(), (int) position.getY());
+        setLocation((int) Math.round(position.getX()), (int) Math.round(position.getY()));
     }
 }
